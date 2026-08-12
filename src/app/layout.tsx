@@ -40,6 +40,20 @@ export const metadata: Metadata = {
     title: `${PRACTICE.name} — Counseling in Harrisonburg, VA`,
     description: PRACTICE.description,
     url: "/",
+    images: [
+      {
+        url: "/og.png",
+        width: 1200,
+        height: 630,
+        alt: `${PRACTICE.name} — Hope. Healing. Possibility.`,
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `${PRACTICE.name} — Counseling in Harrisonburg, VA`,
+    description: PRACTICE.description,
+    images: ["/og.png"],
   },
 };
 

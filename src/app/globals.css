@@ -184,6 +184,78 @@
   opacity: 1;
 }
 
+/* ===========================================================================
+   The living hero (RidgeScene) — a background "video" with no video file.
+
+   Sunrise, breathing dawn glow, drifting clouds and valley mist, passing
+   flocks, rising light motes, and pointer parallax. Every scene element sits
+   in a .rs-px-* group that translates by --par-x/--par-y (set by
+   src/components/fx/Parallax.tsx) at its own depth, while the CSS keyframes
+   animate the group inside it — separate elements, no transform conflicts.
+   =========================================================================== */
+
+@keyframes rs-breathe {
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 0.95; }
+}
+@keyframes rs-pulse {
+  0%, 100% { transform: scale(1); opacity: 0.3; }
+  50% { transform: scale(1.14); opacity: 0.48; }
+}
+@keyframes rs-sunrise {
+  from { transform: translateY(52px); }
+  to { transform: translateY(0); }
+}
+@keyframes rs-mist-x {
+  from { transform: translateX(0); }
+  to { transform: translateX(1440px); }
+}
+@keyframes rs-cloud-x {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(70px); }
+}
+@keyframes rs-flight {
+  0% { transform: translate(-160px, 34px); opacity: 0; }
+  7% { opacity: 0.55; }
+  93% { opacity: 0.55; }
+  100% { transform: translate(1600px, -48px); opacity: 0; }
+}
+@keyframes rs-mote {
+  0% { transform: translateY(0); opacity: 0; }
+  18% { opacity: 0.55; }
+  70% { opacity: 0.26; }
+  100% { transform: translateY(-66px); opacity: 0; }
+}
+
+.rs-breathe { animation: rs-breathe 9s ease-in-out infinite; }
+.rs-halo {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: rs-pulse 8s ease-in-out infinite;
+}
+.rs-sunrise { animation: rs-sunrise 3.2s var(--ease-soft) both; }
+.rs-mist-track { animation: rs-mist-x 85s linear infinite; }
+.rs-mist-fast { animation-duration: 58s; }
+.rs-cloud-1 { animation: rs-cloud-x 75s ease-in-out infinite; }
+.rs-cloud-2 { animation: rs-cloud-x 100s ease-in-out infinite reverse; }
+.rs-flock { animation: rs-flight 54s linear infinite; }
+.rs-flock-2 { animation-duration: 74s; animation-delay: 21s; }
+.rs-mote { animation: rs-mote 11s ease-in-out infinite; }
+
+/* Parallax depths (px of travel at full pointer deflection). */
+.rs-px {
+  transform: translate3d(
+    calc(var(--par-x, 0) * var(--px-depth, 0) * 1px),
+    calc(var(--par-y, 0) * var(--px-depth-y, 0) * 1px),
+    0
+  );
+  will-change: transform;
+}
+.rs-px-sky { --px-depth: 7; --px-depth-y: 4; }
+.rs-px-far { --px-depth: 13; --px-depth-y: 7; }
+.rs-px-mid { --px-depth: 21; --px-depth-y: 11; }
+.rs-px-near { --px-depth: 32; --px-depth-y: 15; }
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -206,5 +278,21 @@
   .animate-breathe,
   .animate-fade-up {
     animation: none !important;
+  }
+  /* Freeze the hero scene into the still it was designed from. The flocks
+     and motes carry opacity="0" in the markup, so without their animations
+     they simply vanish rather than hanging mid-sky. */
+  .rs-breathe,
+  .rs-halo,
+  .rs-sunrise,
+  .rs-mist-track,
+  .rs-cloud-1,
+  .rs-cloud-2,
+  .rs-flock,
+  .rs-mote {
+    animation: none !important;
+  }
+  .rs-px {
+    transform: none;
   }
 }
