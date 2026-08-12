@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Dawn over the Blue Ridge — the site's mark, drawn to match the hero. -->
+  <rect width="64" height="64" rx="14" fill="#FAF7F1"/>
+  <circle cx="32" cy="27" r="9" fill="#C5A462"/>
+  <path d="M0 40 L10 32 L19 39 L30 28 L41 38 L52 30 L64 40 L64 64 L0 64 Z" fill="#6B8770"/>
+  <path d="M0 48 L14 40 L26 47 L38 38 L50 46 L64 39 L64 64 L0 64 Z" fill="#344D3B"/>
+</svg>

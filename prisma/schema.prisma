@@ -1,0 +1,79 @@
+// Randy Hook, LCSW — data model
+// Docs: https://pris.ly/d/prisma-schema
+//
+// Postgres (works on Render, Vercel, Neon, Supabase, etc.). Point DATABASE_URL
+// at your hosted Postgres connection string.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+/// A session type the practice offers (individual therapy, couples counseling,
+/// free consultation, …). Seeded in prisma/seed.ts.
+model Service {
+  id              String        @id @default(cuid())
+  name            String
+  description     String        @default("")
+  durationMinutes Int           // how long the session blocks the calendar
+  priceCents      Int           // fee in cents (e.g. 13000 = $130.00)
+  category        String        @default("Individual")
+  active          Boolean       @default(true)
+  sortOrder       Int           @default(0)
+  createdAt       DateTime      @default(now())
+  appointments    Appointment[]
+}
+
+/// A booked (or requested) session. Times are stored in the practice's LOCAL
+/// time as plain strings (date "YYYY-MM-DD", time "HH:MM") to avoid timezone
+/// drift between the server and the office.
+model Appointment {
+  id              String   @id @default(cuid())
+  service         Service? @relation(fields: [serviceId], references: [id], onDelete: SetNull)
+  serviceId       String?
+  serviceName     String   // snapshot of the session name at booking time
+  durationMinutes Int      // snapshot of duration so availability math is stable
+  priceCents      Int      @default(0)
+
+  date            String   // "YYYY-MM-DD" in practice local time
+  startTime       String   // "HH:MM" 24h start time
+
+  clientName      String
+  clientEmail     String   @default("")
+  clientPhone     String   @default("")
+  sessionFormat   String   @default("IN_PERSON") // "IN_PERSON" | "TELEHEALTH"
+  notes           String   @default("")
+
+  // One of: REQUESTED | CONFIRMED | COMPLETED | CANCELLED | NO_SHOW
+  // (stored as text — validated in app code). Online bookings arrive as
+  // REQUESTED (they hold the slot) and Randy confirms them in the admin.
+  status          String   @default("REQUESTED")
+  source          String   @default("online") // "online" | "admin"
+
+  // When the 24h reminder email was sent (null = not yet). De-dupes reminders.
+  reminderSentAt  DateTime?
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([date])
+  @@index([status])
+}
+
+/// Personal / blocked time — holds a window on the calendar with no client
+/// attached (lunch, supervision, PTO, paperwork). Managed from the admin
+/// "Blocked time" view; the booking engine treats these as busy.
+model BlockedTime {
+  id              String   @id @default(cuid())
+  date            String   // "YYYY-MM-DD" in practice local time
+  startTime       String   // "HH:MM" 24h
+  durationMinutes Int
+  reason          String   @default("")
+  createdAt       DateTime @default(now())
+
+  @@index([date])
+}
