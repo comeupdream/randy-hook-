@@ -48,7 +48,7 @@ function Hero() {
           I believe in <em className="text-accent">healing</em>…
           <br />
           and I believe deeply in the power of{" "}
-          <em className="text-accent">possibility</em>.
+          <em className="text-sun">possibility</em>.
         </h1>
         <p
           className="mt-6 max-w-xl text-balance text-base leading-relaxed text-ink/70 sm:text-lg animate-fade-up"

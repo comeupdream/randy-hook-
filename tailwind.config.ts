@@ -18,6 +18,7 @@ const config: Config = {
         "accent-deep": "rgb(var(--accent-deep) / <alpha-value>)",
         clay: "rgb(var(--clay) / <alpha-value>)",
         gold: "rgb(var(--gold) / <alpha-value>)",
+        sun: "rgb(var(--sun) / <alpha-value>)",
         dawn: "rgb(var(--dawn) / <alpha-value>)",
         mist: "rgb(var(--mist) / <alpha-value>)",
       },
