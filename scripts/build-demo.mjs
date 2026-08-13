@@ -53,6 +53,8 @@ try {
       DEMO_STATIC: "1",
       NEXT_PUBLIC_DEMO_MODE: "1",
       DEMO_BASE_PATH: process.env.DEMO_BASE_PATH || "",
+      // Raw asset URLs (hero video/poster) need the base path explicitly.
+      NEXT_PUBLIC_BASE_PATH: process.env.DEMO_BASE_PATH || "",
     },
   });
 

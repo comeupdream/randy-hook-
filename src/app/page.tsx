@@ -1,10 +1,10 @@
 import Link from "next/link";
 import DemoBadge from "@/components/DemoBadge";
+import HeroVideo from "@/components/HeroVideo";
 import RidgeScene from "@/components/RidgeScene";
 import SiteFooter from "@/components/SiteFooter";
 import SiteHeader from "@/components/SiteHeader";
 import { LiftCard, Reveal } from "@/components/fx/Lift";
-import Parallax from "@/components/fx/Parallax";
 import { SERVICE_CATALOG, SPECIALTIES } from "@/lib/catalog";
 import { formatDuration, formatPrice } from "@/lib/format";
 import { PRACTICE, hoursForDisplay } from "@/lib/practice-config";
@@ -70,13 +70,9 @@ function Hero() {
         </div>
       </div>
 
-      {/* The living Blue Ridge horizon — animated sunrise, mist, flocks,
-          and pointer parallax, all procedural (see RidgeScene). Overscanned
-          past the section edges so parallax travel never exposes a border
-          (the section's overflow-hidden clips the excess). */}
-      <Parallax className="pointer-events-none absolute -inset-x-12 -bottom-6 h-[calc(42vh+3rem)]">
-        <RidgeScene className="h-full w-full" />
-      </Parallax>
+      {/* Aerial Blue Ridge footage, looped seamlessly and blended into the
+          dawn palette (falls back to a still under reduced motion). */}
+      <HeroVideo className="pointer-events-none absolute inset-x-0 bottom-0 h-[46vh]" />
     </section>
   );
 }
