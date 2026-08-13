@@ -243,6 +243,20 @@
 .rs-flock-2 { animation-duration: 74s; animation-delay: 21s; }
 .rs-mote { animation: rs-mote 11s ease-in-out infinite; }
 
+/* Gutter word columns beside the hero video — seamless vertical marquee
+   (content is doubled; the track drifts half its own height). */
+@keyframes gutter-scroll {
+  from { transform: translateY(0); }
+  to { transform: translateY(-50%); }
+}
+.gutter-track {
+  animation: gutter-scroll 56s linear infinite;
+  will-change: transform;
+}
+.gutter-track-reverse {
+  animation-direction: reverse;
+}
+
 /* Parallax depths (px of travel at full pointer deflection). */
 .rs-px {
   transform: translate3d(
@@ -295,5 +309,8 @@
   }
   .rs-px {
     transform: none;
+  }
+  .gutter-track {
+    animation: none !important;
   }
 }

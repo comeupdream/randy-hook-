@@ -35,9 +35,9 @@ export default function HeroVideo({ className = "" }: { className?: string }) {
     <div className={className} aria-hidden>
       <video
         ref={videoRef}
-        // The source is square; bias the crop upward so the rising sun and
-        // its reflection stay in frame inside the wide hero band.
-        className="h-full w-full object-cover object-[50%_25%]"
+        // The source is square; sit the window lower in the frame so the
+        // sun, lake, and forest all read inside the tall hero band.
+        className="h-full w-full object-cover object-[50%_42%]"
         poster={`${ASSET_PREFIX}/hero-poster.jpg`}
         autoPlay={!reduced}
         muted
@@ -51,8 +51,10 @@ export default function HeroVideo({ className = "" }: { className?: string }) {
       </video>
       {/* Warm the footage into the dawn palette… */}
       <div className="absolute inset-0 bg-dawn/30 mix-blend-soft-light" />
-      {/* …and melt its sky into the page above. */}
-      <div className="absolute inset-0 bg-gradient-to-b from-bg via-bg/20 to-transparent" />
+      {/* …and melt its sky into the page above. The wash stays near-opaque
+          through the upper third so the headline never chafes against the
+          frame's top edge — the footage surfaces softly beneath it. */}
+      <div className="absolute inset-0 bg-gradient-to-b from-bg from-[6%] via-bg/45 via-[38%] to-transparent" />
     </div>
   );
 }

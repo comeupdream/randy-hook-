@@ -1,5 +1,6 @@
 import Link from "next/link";
 import DemoBadge from "@/components/DemoBadge";
+import GutterWords from "@/components/GutterWords";
 import HeroVideo from "@/components/HeroVideo";
 import RidgeScene from "@/components/RidgeScene";
 import SiteFooter from "@/components/SiteFooter";
@@ -35,7 +36,7 @@ export default function HomePage() {
 function Hero() {
   return (
     <section className="relative flex min-h-screen flex-col overflow-hidden bg-gradient-to-b from-bg via-dawn/40 to-dawn/70">
-      <div className="container-page relative z-10 flex flex-1 flex-col items-center justify-center pb-[46vh] pt-28 text-center sm:pb-[44vh]">
+      <div className="container-page relative z-10 flex flex-1 flex-col items-center justify-center pb-[48vh] pt-24 text-center sm:pb-[46vh]">
         <p className="eyebrow animate-fade-up">
           Randy Hook · Licensed Clinical Social Worker
         </p>
@@ -71,9 +72,21 @@ function Hero() {
       </div>
 
       {/* Aerial sunrise footage, looped seamlessly and blended into the
-          dawn palette (falls back to a still under reduced motion). The tall
-          band lets most of the square frame breathe. */}
-      <HeroVideo className="pointer-events-none absolute inset-x-0 bottom-0 h-[62vh]" />
+          dawn palette (falls back to a still under reduced motion). On
+          large screens the video pulls in from the edges — a tighter frame
+          means less upscaling of the square source, so it plays sharper —
+          and the gutters carry a slow drift of giving words. */}
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[76vh]">
+        <GutterWords
+          side="left"
+          className="absolute left-0 top-0 hidden h-full w-36 lg:block"
+        />
+        <GutterWords
+          side="right"
+          className="absolute right-0 top-0 hidden h-full w-36 lg:block"
+        />
+        <HeroVideo className="absolute inset-x-0 bottom-0 h-full overflow-hidden lg:inset-x-36 lg:rounded-t-[2rem]" />
+      </div>
     </section>
   );
 }
