@@ -36,7 +36,23 @@ export default function HomePage() {
 function Hero() {
   return (
     <section className="relative flex min-h-screen flex-col overflow-hidden bg-gradient-to-b from-bg via-dawn/40 to-dawn/70">
-      <div className="container-page relative z-10 flex flex-1 flex-col items-center justify-center pb-[48vh] pt-24 text-center sm:pb-[46vh]">
+      {/* The sunrise leads: footage crowns the hero just below the header
+          with the sun fully in frame, and the headline rests on the misted
+          water beneath it, where the footage has already melted into the
+          page. */}
+      <div className="pointer-events-none absolute inset-x-0 top-20 h-[70vh]">
+        <GutterWords
+          side="left"
+          className="absolute left-0 top-0 hidden h-full w-36 lg:block"
+        />
+        <GutterWords
+          side="right"
+          className="absolute right-0 top-0 hidden h-full w-36 lg:block"
+        />
+        <HeroVideo className="absolute inset-x-0 top-0 h-full overflow-hidden lg:inset-x-36 lg:rounded-[2rem]" />
+      </div>
+
+      <div className="container-page relative z-10 flex flex-col items-center pb-36 pt-[calc(5rem+28vh)] text-center sm:pb-24">
         <p className="eyebrow animate-fade-up">
           Randy Hook · Licensed Clinical Social Worker
         </p>
@@ -71,22 +87,6 @@ function Hero() {
         </div>
       </div>
 
-      {/* Aerial sunrise footage, looped seamlessly and blended into the
-          dawn palette (falls back to a still under reduced motion). On
-          large screens the video pulls in from the edges — a tighter frame
-          means less upscaling of the square source, so it plays sharper —
-          and the gutters carry a slow drift of giving words. */}
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[76vh]">
-        <GutterWords
-          side="left"
-          className="absolute left-0 top-0 hidden h-full w-36 lg:block"
-        />
-        <GutterWords
-          side="right"
-          className="absolute right-0 top-0 hidden h-full w-36 lg:block"
-        />
-        <HeroVideo className="absolute inset-x-0 bottom-0 h-full overflow-hidden lg:inset-x-36 lg:rounded-t-[2rem]" />
-      </div>
     </section>
   );
 }

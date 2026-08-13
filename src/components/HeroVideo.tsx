@@ -1,60 +1,96 @@
 "use client";
 
 /**
- * The hero's aerial Blue Ridge footage — compressed to a ~0.5MB seamless
- * crossfade loop (scripts in the repo history; source uploaded by the
- * practice). Muted, inline, autoplaying background video with:
+ * The hero's aerial sunrise footage — a seamless crossfade loop served as
+ * H.264 (Safari/iOS first) with a VP9 fallback, warmed into the dawn
+ * palette and melted into the page toward its lower edge, so the headline
+ * can rest on the misted water while the sun stays vivid above.
  *
- *  - an ivory gradient that melts the footage into the page,
- *  - a soft dawn tint so the sky sits inside the site's warm palette,
- *  - a poster frame while loading,
- *  - and a reduced-motion path that holds the poster still.
+ * iOS Safari needs special care to autoplay:
+ *  - React sets the `muted` DOM property but does not emit the attribute
+ *    into server-rendered HTML, and iOS's autoplay gate checks the
+ *    attribute — so we set it (and defaultMuted) imperatively.
+ *  - Play is attempted immediately, again on loadedmetadata, and once more
+ *    on the first touch/click (Low Power Mode blocks autoplay until a
+ *    gesture; the poster holds the frame until then).
+ *  - prefers-reduced-motion pauses playback and rests on the poster.
  */
 import { useEffect, useRef, useState } from "react";
 import { ASSET_PREFIX } from "@/lib/mode";
 
 export default function HeroVideo({ className = "" }: { className?: string }) {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const reducedRef = useRef(false);
   const [reduced, setReduced] = useState(false);
 
   useEffect(() => {
+    const v = videoRef.current;
+    if (!v) return;
+
+    // iOS autoplay gate checks attributes, not just properties.
+    v.defaultMuted = true;
+    v.muted = true;
+    v.setAttribute("muted", "");
+    v.setAttribute("playsinline", "");
+
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const apply = () => {
-      setReduced(mq.matches);
-      const v = videoRef.current;
-      if (!v) return;
-      if (mq.matches) v.pause();
-      else v.play().catch(() => undefined);
+    const tryPlay = () => {
+      if (!reducedRef.current) v.play().catch(() => undefined);
     };
-    apply();
-    mq.addEventListener("change", apply);
-    return () => mq.removeEventListener("change", apply);
+    const applyMotionPref = () => {
+      reducedRef.current = mq.matches;
+      setReduced(mq.matches);
+      if (mq.matches) v.pause();
+      else tryPlay();
+    };
+
+    applyMotionPref();
+    mq.addEventListener("change", applyMotionPref);
+    v.addEventListener("loadedmetadata", tryPlay);
+    v.addEventListener("canplay", tryPlay);
+
+    // Low Power Mode fallback: first gesture anywhere starts the loop.
+    const onGesture = () => {
+      tryPlay();
+      window.removeEventListener("touchend", onGesture);
+      window.removeEventListener("click", onGesture);
+    };
+    window.addEventListener("touchend", onGesture, { passive: true });
+    window.addEventListener("click", onGesture);
+
+    return () => {
+      mq.removeEventListener("change", applyMotionPref);
+      v.removeEventListener("loadedmetadata", tryPlay);
+      v.removeEventListener("canplay", tryPlay);
+      window.removeEventListener("touchend", onGesture);
+      window.removeEventListener("click", onGesture);
+    };
   }, []);
 
   return (
     <div className={className} aria-hidden>
       <video
         ref={videoRef}
-        // The source is square; sit the window lower in the frame so the
-        // sun, lake, and forest all read inside the tall hero band.
-        className="h-full w-full object-cover object-[50%_42%]"
+        // The source is square; keep the window high in the frame so the
+        // sun crowns the band with its sky intact.
+        className="h-full w-full object-cover object-[50%_15%]"
         poster={`${ASSET_PREFIX}/hero-poster.jpg`}
         autoPlay={!reduced}
         muted
         loop
         playsInline
-        preload="metadata"
+        preload="auto"
       >
-        {/* VP9 for Chrome/Firefox/Edge, H.264 for Safari/iOS. */}
-        <source src={`${ASSET_PREFIX}/hero.webm`} type="video/webm" />
+        {/* H.264 first — iOS/Safari's native pick; VP9 for the rest. */}
         <source src={`${ASSET_PREFIX}/hero.mp4`} type="video/mp4" />
+        <source src={`${ASSET_PREFIX}/hero.webm`} type="video/webm" />
       </video>
       {/* Warm the footage into the dawn palette… */}
       <div className="absolute inset-0 bg-dawn/30 mix-blend-soft-light" />
-      {/* …and melt its sky into the page above. The wash stays near-opaque
-          through the upper third so the headline never chafes against the
-          frame's top edge — the footage surfaces softly beneath it. */}
-      <div className="absolute inset-0 bg-gradient-to-b from-bg from-[6%] via-bg/45 via-[38%] to-transparent" />
+      {/* …and melt the footage downward into the page: the sun and sky stay
+          vivid up top, while the misty lake softens into ivory beneath —
+          which is exactly where the headline rests. */}
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent from-[24%] via-bg/60 via-[55%] to-bg" />
     </div>
   );
 }
