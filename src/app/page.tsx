@@ -34,8 +34,8 @@ export default function HomePage() {
 
 function Hero() {
   return (
-    <section className="relative flex min-h-[94vh] flex-col overflow-hidden bg-gradient-to-b from-bg via-dawn/40 to-dawn/70">
-      <div className="container-page relative z-10 flex flex-1 flex-col items-center justify-center pb-[38vh] pt-32 text-center sm:pb-[34vh]">
+    <section className="relative flex min-h-screen flex-col overflow-hidden bg-gradient-to-b from-bg via-dawn/40 to-dawn/70">
+      <div className="container-page relative z-10 flex flex-1 flex-col items-center justify-center pb-[46vh] pt-28 text-center sm:pb-[44vh]">
         <p className="eyebrow animate-fade-up">
           Randy Hook · Licensed Clinical Social Worker
         </p>
@@ -70,16 +70,17 @@ function Hero() {
         </div>
       </div>
 
-      {/* Aerial Blue Ridge footage, looped seamlessly and blended into the
-          dawn palette (falls back to a still under reduced motion). */}
-      <HeroVideo className="pointer-events-none absolute inset-x-0 bottom-0 h-[46vh]" />
+      {/* Aerial sunrise footage, looped seamlessly and blended into the
+          dawn palette (falls back to a still under reduced motion). The tall
+          band lets most of the square frame breathe. */}
+      <HeroVideo className="pointer-events-none absolute inset-x-0 bottom-0 h-[62vh]" />
     </section>
   );
 }
 
 /* --------------------------------------------------------------- Pillars */
 
-const PILLARS = [
+const PILLARS: { title: string; blurb: React.ReactNode; sun?: boolean; icon: React.ReactNode }[] = [
   {
     title: "Hope",
     blurb:
@@ -105,8 +106,13 @@ const PILLARS = [
   },
   {
     title: "Possibility",
-    blurb:
-      "Regardless of where you have been or what you have been through — possibility is still within reach.",
+    sun: true,
+    blurb: (
+      <>
+        Regardless of where you have been or what you have been through —{" "}
+        <span className="text-sun">possibility</span> is still within reach.
+      </>
+    ),
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
         <path d="M4 21V5a2 2 0 0 1 2-2h7l7 7v11" />
@@ -127,7 +133,9 @@ function Pillars() {
               <div className="flex h-11 w-11 items-center justify-center rounded-full bg-accent/10 text-accent [&_svg]:h-6 [&_svg]:w-6">
                 {p.icon}
               </div>
-              <h2 className="mt-5 font-serif text-2xl">{p.title}</h2>
+              <h2 className={`mt-5 font-serif text-2xl${p.sun ? " text-sun" : ""}`}>
+                {p.title}
+              </h2>
               <p className="mt-2 text-sm leading-relaxed text-muted">{p.blurb}</p>
             </LiftCard>
           </Reveal>
@@ -160,15 +168,18 @@ function Welcome() {
                 circumstances that have challenged your ability to believe in
                 any of these virtues. For whatever reason life has dealt you a
                 hand that is hard to play. All of us, and I mean all of us, go
-                through times of transition, turmoil and thus… possibility.
+                through times of transition, turmoil and thus…{" "}
+                <span className="text-sun">possibility</span>.
               </p>
               <p>
                 I want to help you realize your full potential to discover and
                 develop your true self with the understanding that hope,
-                healing and possibility are the essence of navigating through
-                anything that life may throw at us. Regardless of where you
-                have been or what you have been through I want you to know
-                that possibility is still within reach.
+                healing and <span className="text-sun">possibility</span> are
+                the essence of navigating through anything that life may throw
+                at us. Regardless of where you have been or what you have been
+                through I want you to know that{" "}
+                <span className="text-sun">possibility</span> is still within
+                reach.
               </p>
               <p>I welcome the opportunity to walk with you on your path.</p>
             </div>
@@ -496,7 +507,7 @@ function ClosingCta() {
       <div className="container-page relative z-10 py-24 text-center sm:py-32">
         <Reveal>
           <h2 className="display mx-auto max-w-3xl text-balance text-4xl leading-tight sm:text-6xl">
-            Possibility is still <em className="text-accent">within reach</em>.
+            <em className="text-sun">Possibility</em> is still within reach.
           </h2>
           <p className="mx-auto mt-5 max-w-xl text-muted">
             Whenever you&apos;re ready, the first step is a small one — and you

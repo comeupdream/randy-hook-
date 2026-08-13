@@ -8,7 +8,9 @@ export default function SiteFooter() {
       <div className="container-page grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-4">
         <div className="lg:col-span-2">
           <div className="font-serif text-2xl">{PRACTICE.name}</div>
-          <p className="flourish mt-1 text-lg">hope · healing · possibility</p>
+          <p className="flourish mt-1 text-lg">
+            hope · healing · <span className="text-sun">possibility</span>
+          </p>
           <p className="mt-3 max-w-sm text-sm leading-relaxed text-muted">
             {PRACTICE.description}
           </p>
