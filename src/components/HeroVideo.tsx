@@ -35,7 +35,9 @@ export default function HeroVideo({ className = "" }: { className?: string }) {
     <div className={className} aria-hidden>
       <video
         ref={videoRef}
-        className="h-full w-full object-cover"
+        // The source is square; bias the crop upward so the rising sun and
+        // its reflection stay in frame inside the wide hero band.
+        className="h-full w-full object-cover object-[50%_25%]"
         poster={`${ASSET_PREFIX}/hero-poster.jpg`}
         autoPlay={!reduced}
         muted

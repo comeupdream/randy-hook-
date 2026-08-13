@@ -55,6 +55,10 @@ try {
       DEMO_BASE_PATH: process.env.DEMO_BASE_PATH || "",
       // Raw asset URLs (hero video/poster) need the base path explicitly.
       NEXT_PUBLIC_BASE_PATH: process.env.DEMO_BASE_PATH || "",
+      // Absolute URLs in metadata (og:url, og:image) resolve against the
+      // demo's public home so shared links unfurl with the card.
+      NEXT_PUBLIC_SITE_URL:
+        process.env.NEXT_PUBLIC_SITE_URL || "https://randy-hook.onrender.com",
     },
   });
 
