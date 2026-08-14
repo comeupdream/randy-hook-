@@ -128,9 +128,7 @@ const PILLARS: { title: string; blurb: React.ReactNode; sun?: boolean; icon: Rea
     ),
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M4 21V5a2 2 0 0 1 2-2h7l7 7v11" />
-        <path d="M13 3v7h7" />
-        <path d="M8 14h5M8 17h8" />
+        <path d="M12 12c-2-2.67-4-4-6-4a4 4 0 1 0 0 8c2 0 4-1.33 6-4Zm0 0c2 2.67 4 4 6 4a4 4 0 0 0 0-8c-2 0-4 1.33-6 4Z" />
       </svg>
     ),
   },
