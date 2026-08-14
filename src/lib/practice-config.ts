@@ -37,13 +37,13 @@ export const PRACTICE = {
    * Index: 0 = Sunday … 6 = Saturday. `null` means closed that day.
    */
   hours: {
-    0: null, // Sunday — closed
+    0: { open: "12:00", close: "16:00" }, // Sunday
     1: { open: "09:00", close: "17:00" }, // Monday
     2: { open: "09:00", close: "19:00" }, // Tuesday
     3: { open: "09:00", close: "19:00" }, // Wednesday
     4: { open: "09:00", close: "19:00" }, // Thursday
     5: { open: "09:00", close: "14:00" }, // Friday
-    6: null, // Saturday — closed
+    6: { open: "12:00", close: "16:00" }, // Saturday
   } as Record<number, DayHours>,
 } as const;
 
